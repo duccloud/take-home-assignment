@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { AuthenticatedRequest } from '../types/AuthenticatedRequest';
+import { HTTP_STATUS } from '../constant/httpStatusCodes'
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ export const validateJwt = (req: AuthenticatedRequest, res: Response, next: Next
    const token = req.headers.authorization?.split(' ')[1];
 
    if (!token) {
-      return res.status(401).json({ message: 'Authorization token not found' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Authorization token not found' });
    }
 
    try {
@@ -20,11 +21,11 @@ export const validateJwt = (req: AuthenticatedRequest, res: Response, next: Next
       next();
    } catch (error) {
       console.error('Error verifying JWT:', error);
-      return res.status(401).json({ message: 'Invalid or expired token' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Invalid or expired token' });
    }
 };
 
 export const authorizeRequest = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-   // About authorization purpose
+   // Authorization purpose
    next();
 };
