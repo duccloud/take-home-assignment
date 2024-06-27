@@ -1,21 +1,24 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import User from '../models/User';
 import { hashPassword, comparePasswords } from '../utils/passwordUtils';
+import { sendResponse } from '../utils/responseUtils';
 import { UserAttributes } from '../models/interfaces';
+import { BadRequestError, DataError, ResourceNotFoundError, InvalidTokenError } from '../errors/httpErrorHandlers'
+import { HTTP_STATUS } from '../constant/httpStatusCodes';
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWWT_TOKEN_EXPIRE_TIME = process.env.JWWT_TOKEN_EXPIRE_TIME as string;
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
    const { username, password } = req.body;
 
    try {
-      // Validate input
       if (!username || !password) {
-         res.status(400).json({ message: 'Username and password are required' });
+         next(new BadRequestError('Username and password are required'));
          return;
       }
 
@@ -26,42 +29,40 @@ export const register = async (req: Request, res: Response): Promise<void> => {
          password: hashedPassword,
       } as UserAttributes);
 
-      res.status(201).json({ message: 'User registered successfully', user: newUser });
+      sendResponse(res, HTTP_STATUS.CREATED, 'User registered successfully', { user: newUser });
+
    } catch (error) {
-      console.error('Error during registration:', error);
-      res.status(500).json({ message: 'Failed to register user' });
+      next(error);
    }
 };
 
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
    const { username, password } = req.body;
 
    try {
-      // Validate input
       if (!username || !password) {
-         res.status(400).json({ message: 'Username and password are required' });
+         next(new BadRequestError('Username and password are required'));
          return;
       }
 
       const user = await User.findOne({ where: { username } });
 
       if (!user) {
-         res.status(404).json({ message: 'User not found' });
+         next(new ResourceNotFoundError('User not found'));
          return;
       }
 
       const isPasswordValid = await comparePasswords(password, user.password);
 
       if (!isPasswordValid) {
-         res.status(401).json({ message: 'Invalid credentials' });
+         next(new BadRequestError('Username or password is wrong'));
          return;
       }
 
-      const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: JWWT_TOKEN_EXPIRE_TIME });
 
       res.json({ token });
    } catch (error) {
-      console.error('Error during login:', error);
-      res.status(500).json({ message: 'Login failed' });
+      next(error);
    }
 };
