@@ -9,6 +9,11 @@ class User extends Model<UserAttributes> implements UserAttributes {
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
+
+    public toJSON(): Omit<UserAttributes, 'password'> {
+        const { password, ...attributes } = this.get();
+        return attributes;
+    }
 }
 
 User.init(

@@ -2,12 +2,12 @@
 
 # Prerequisites
 ## Mysql
-This project uses MySQL as database model
-- Install docker
-- Pull mysql image
-- Start mysql container
+This project uses MySQL as the database.
+- Install Docker.
+- Pull the MySQL image.
+- Start the MySQL container.
 
-You can use sample.sql in the root of projectand use it to dump the SQL file for testing purposes.
+You can use sample.sql located in the root of the project to set up the database for testing purposes.
 
 ## NodeJS and ExpressJs
 The project works well with:
@@ -47,7 +47,6 @@ Response:
         "user": {
             "id": 33,
             "username": "ducnguyen6",
-            "password": "$2a$10$Gy2/euhKxXnWhTSzorP8t.FN6nQ5N9FM3bTG4KpPrT7PH7ngFywJW",
             "updatedAt": "2024-06-27T08:07:42.692Z",
             "createdAt": "2024-06-27T08:07:42.692Z"
         }
@@ -65,7 +64,7 @@ curl --location 'http://localhost:3000/api/v1/auth/register' \
 }'
 ```
 
-### Login
+### <a name="ep-login"></a>Login
 To log in with the new user's credentials and obtain an access token.
 
 Method: POST
@@ -97,7 +96,7 @@ curl --location 'http://localhost:3000/api/v1/auth/login' \
 }'
 ```
 
-### Get user basic information
+### <a name="ep-get-user"></a>Get user basic information
 To get the basic information from a user.
 
 Method: GET
@@ -113,7 +112,6 @@ Response:
     "user": {
         "id": 33,
         "username": "ducnguyen6",
-        "password": "$2a$10$Gy2/euhKxXnWhTSzorP8t.FN6nQ5N9FM3bTG4KpPrT7PH7ngFywJW",
         "createdAt": "2024-06-27T08:07:42.000Z",
         "updatedAt": "2024-06-27T08:07:42.000Z"
     }
