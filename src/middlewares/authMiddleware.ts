@@ -1,26 +1,30 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { AuthenticatedRequest } from '../types/AuthenticatedRequest';
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
-   const authHeader = req.headers['authorization'];
-   const token = authHeader && authHeader.split(' ')[1];
+export const validateJwt = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+   const token = req.headers.authorization?.split(' ')[1];
 
-   if (token == null) {
-      res.status(401).json({ message: 'Authentication token required' });
-      return;
+   if (!token) {
+      return res.status(401).json({ message: 'Authorization token not found' });
    }
 
-   jwt.verify(token, JWT_SECRET, (err, user) => {
-      if (err) {
-         res.status(403).json({ message: 'Invalid token' });
-         return;
-      }
-      req.user = user;
+   try {
+      const decodedToken = jwt.verify(token, JWT_SECRET) as { username: string };
+      req.decodedToken = decodedToken;
       next();
-   });
+   } catch (error) {
+      console.error('Error verifying JWT:', error);
+      return res.status(401).json({ message: 'Invalid or expired token' });
+   }
+};
+
+export const authorizeRequest = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+   // About authorization purpose
+   next();
 };
