@@ -35,8 +35,8 @@ URL: api/v1/auth/register
 Body: 
 ```
 {
-    "username": "ducnguyen6",
-    "password": "ducnguyen6"
+    "username": "ducnguyen8",
+    "password": "HCM@City89"
 }
 ```
 Response:
@@ -46,7 +46,7 @@ Response:
     "data": {
         "user": {
             "id": 33,
-            "username": "ducnguyen6",
+            "username": "ducnguyen8",
             "updatedAt": "2024-06-27T08:07:42.692Z",
             "createdAt": "2024-06-27T08:07:42.692Z"
         }
@@ -59,8 +59,8 @@ Example CURL:
 curl --location 'http://localhost:3000/api/v1/auth/register' \
 --header 'Content-Type: application/json' \
 --data '{
-    "username": "ducnguyen6",
-    "password": "ducnguyen6"
+    "username": "ducnguyen8",
+    "password": "HCM@City89"
 }'
 ```
 
@@ -74,8 +74,8 @@ URL: api/v1/auth/login
 Body: 
 ```
 {
-    "username": "ducnguyen6",
-    "password": "ducnguyen6"
+    "username": "ducnguyen8",
+    "password": "HCM@City89"
 }
 ```
 
@@ -91,8 +91,8 @@ Example CURL:
 curl --location 'http://localhost:3000/api/v1/auth/login' \
 --header 'Content-Type: application/json' \
 --data '{
-    "username": "ducnguyen6",
-    "password": "ducnguyen6"
+    "username": "ducnguyen8",
+    "password": "HCM@City89"
 }'
 ```
 
@@ -111,7 +111,7 @@ Response:
 {
     "user": {
         "id": 33,
-        "username": "ducnguyen6",
+        "username": "ducnguyen8",
         "createdAt": "2024-06-27T08:07:42.000Z",
         "updatedAt": "2024-06-27T08:07:42.000Z"
     }

@@ -13,12 +13,34 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const JWWT_TOKEN_EXPIRE_TIME = process.env.JWWT_TOKEN_EXPIRE_TIME as string;
 
+const validateUsername = (username: string): boolean => {
+   // Username must be between 3 and 30 characters and only contain alphanumeric characters and underscores
+   const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
+   return usernameRegex.test(username);
+};
+
+const validatePassword = (password: string): boolean => {
+   // Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+   return passwordRegex.test(password);
+};
+
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
    const { username, password } = req.body;
 
    try {
       if (!username || !password) {
          next(new BadRequestError('Username and password are required'));
+         return;
+      }
+
+      if (!validateUsername(username)) {
+         next(new BadRequestError('Invalid username. It should be between 3 and 30 characters and contain only alphanumeric characters and underscores.'));
+         return;
+      }
+
+      if (!validatePassword(password)) {
+         next(new BadRequestError('Invalid password. It should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'));
          return;
       }
 
