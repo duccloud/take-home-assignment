@@ -118,7 +118,7 @@ Response:
 }
 ```
 
-Exaxmple CURL:
+Example CURL:
 ```
 curl --location 'http://localhost:3000/api/v1/user' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR1Y25ndXllbjYiLCJpYXQiOjE3MTk0NzU2NzgsImV4cCI6MTcxOTQ3OTI3OH0.gRqsiKa2YknsJ_PFrTEhYaJg6JVYDoFxS6ILyxPri1Y'
