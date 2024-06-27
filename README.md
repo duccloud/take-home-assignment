@@ -1,5 +1,3 @@
-
-
 # Prerequisites
 ## Mysql
 This project uses MySQL as the database.
